@@ -1,0 +1,28 @@
+{
+  "reports": [
+    {
+      "code": "MPS-C-001",
+      "report": {
+        "examDate": "2026-10-10",
+        "stage": "성장기 이전",
+        "boneAgeMonths": 138,
+        "maturity": "지연",
+        "height": 148.2,
+        "weight": 38.5,
+        "examCenter": "가상 MPS 측정센터",
+        "mental": {
+          "type": "오뚝이 회복형",
+          "strengths": ["실수 후 재참여", "도움 요청"],
+          "needs": ["경기 전 긴장", "준비 루틴"]
+        },
+        "physical": {
+          "strengths": ["움직임 습득", "리듬 조절"],
+          "focus": ["한발 균형", "좌우 협응"],
+          "needs": ["한발 균형", "좌우 협응"],
+          "recommendations": ["한발 균형 후 짧은 패스", "낮은 속도에서 방향 전환 관찰"]
+        },
+        "metrics": { "멘탈 준비": "4.8 / 6", "멘탈 회복": "5.2 / 6" }
+      }
+    }
+  ]
+}
