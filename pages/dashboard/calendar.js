@@ -46,17 +46,12 @@ function googleCalendarUrl(booking){
   url.searchParams.set('details','MPS Center 예약 샘플');
   return url.toString();
 }
-function renderBookingSessionSummary(){
- const p=readPlayers().find(player=>player.id===bookingForm.elements.playerId.value);
- document.querySelector('#booking-session-summary').textContent=p?`총 ${p.paid}회 · 진행 ${p.used}회 · 남은 ${Math.max(0,p.paid-p.used)}회`:'선수를 선택하면 회차가 표시됩니다.';
-}
 function renderPlayerOptions(selected=''){
-  const players=[...readPlayers()].sort(playerNameOrder);
-  document.querySelector('#booking-player').innerHTML='<option value="">선수 선택</option>'+players.map(p=>`<option value="${escapeCalendar(p.id)}" ${p.id===selected?'selected':''}>${escapeCalendar(p.name)} · ${escapeCalendar(p.group||'반 미정')} · 남은 ${Math.max(0,p.paid-p.used)}회</option>`).join('');
+  const players=readPlayers();
+  document.querySelector('#booking-player').innerHTML='<option value="">선수 선택</option>'+players.map(p=>`<option value="${escapeCalendar(p.id)}" ${p.id===selected?'selected':''}>${escapeCalendar(p.name)} · ${escapeCalendar(p.group||'반 미정')}</option>`).join('');
 }
 function clearBookingForm(){bookingForm.reset();bookingForm.elements.bookingId.value='';bookingForm.elements.date.value=selectedDate;bookingForm.elements.time.value='16:00';document.querySelector('#booking-submit').textContent='예약 추가';document.querySelector('#booking-cancel').hidden=true;renderPlayerOptions(calendarPlayerId);bookingForm.elements.playerId.value=calendarPlayerId}
 function renderCalendar(){
-  renderPlayerOptions(bookingForm.elements.playerId.value);renderBookingSessionSummary();
   const [year,month]=viewMonth.split('-').map(Number);
   document.querySelector('#month-label').textContent=`${year}년 ${month}월`;
   document.querySelector('#selected-date-label').textContent=`${selectedDate.replaceAll('-','.')} 예약`;
@@ -79,7 +74,7 @@ window.mpsCalendarOpenForPlayer = playerId => {calendarPlayerId=playerId;returnP
 document.querySelector('#calendar-close').addEventListener('click',()=>calendarDialog.close());
 calendarDialog.addEventListener('click',event=>{if(event.target===calendarDialog)calendarDialog.close()});
 calendarDialog.addEventListener('close',()=>{const playerId=returnPlayerId;returnPlayerId=null;if(playerId)window.mpsReturnToPlayer?.(playerId)});
-document.querySelector('#booking-player').addEventListener('change',event=>{calendarPlayerId=event.target.value;renderBookingSessionSummary()});
+document.querySelector('#booking-player').addEventListener('change',event=>{calendarPlayerId=event.target.value});
 function moveMonth(delta){const [y,m]=viewMonth.split('-').map(Number);const d=new Date(Date.UTC(y,m-1+delta,1));viewMonth=d.toISOString().slice(0,7);selectedDate=`${viewMonth}-01`;clearBookingForm();renderCalendar()}
 document.querySelector('#month-prev').addEventListener('click',()=>moveMonth(-1));
 document.querySelector('#month-next').addEventListener('click',()=>moveMonth(1));
@@ -87,7 +82,7 @@ document.querySelector('#day-grid').addEventListener('click',e=>{const day=e.tar
 document.querySelector('#booking-list').addEventListener('click',e=>{
   const status=e.target.closest('[data-status]');if(status){transitionBooking(status.dataset.booking,status.dataset.status);return}
   const edit=e.target.closest('[data-edit]');const remove=e.target.closest('[data-delete]');
-  if(edit){const b=bookings.find(x=>x.id===edit.dataset.edit);if(!b||b.status==='completed')return;renderPlayerOptions(b.playerId);bookingForm.elements.bookingId.value=b.id;bookingForm.elements.playerId.value=b.playerId;renderBookingSessionSummary();bookingForm.elements.date.value=b.date;bookingForm.elements.time.value=b.time;bookingForm.elements.type.value=b.type;bookingForm.elements.memo.value=b.memo;document.querySelector('#booking-submit').textContent='수정 저장';document.querySelector('#booking-cancel').hidden=false;bookingForm.elements.playerId.focus()}
+  if(edit){const b=bookings.find(x=>x.id===edit.dataset.edit);if(!b||b.status==='completed')return;renderPlayerOptions(b.playerId);bookingForm.elements.bookingId.value=b.id;bookingForm.elements.playerId.value=b.playerId;bookingForm.elements.date.value=b.date;bookingForm.elements.time.value=b.time;bookingForm.elements.type.value=b.type;bookingForm.elements.memo.value=b.memo;document.querySelector('#booking-submit').textContent='수정 저장';document.querySelector('#booking-cancel').hidden=false;bookingForm.elements.playerId.focus()}
   if(remove){const b=bookings.find(x=>x.id===remove.dataset.delete);if(b&&b.status!=='completed'&&confirm(`${b.date} ${b.time} 예약을 삭제할까요?`)){bookings=bookings.filter(x=>x.id!==b.id);saveBookings();clearBookingForm();renderCalendar()}}
 });
 document.querySelector('#booking-cancel').addEventListener('click',clearBookingForm);
@@ -108,5 +103,3 @@ document.querySelector('#complete-day').addEventListener('click',()=>{
  if(selectedDate>todaySeoul()){alert('미래 예약은 완료할 수 없습니다.');return}
  if(confirm(`${selectedDate}의 레슨 ${pending.length}건을 완료할까요? 실제 방문한 예약인지 확인하세요.`))pending.forEach(b=>transitionBooking(b.id,'completed'));
 });
-
-window.addEventListener('mps-state-change',()=>{renderPlayerOptions(bookingForm.elements.playerId.value);renderBookingSessionSummary()});

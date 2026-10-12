@@ -12,16 +12,58 @@
         "examCenter": "가상 MPS 측정센터",
         "mental": {
           "type": "오뚝이 회복형",
-          "strengths": ["실수 후 재참여", "도움 요청"],
-          "needs": ["경기 전 긴장", "준비 루틴"]
+          "strengths": [
+            "실수 후 재참여",
+            "도움 요청"
+          ],
+          "needs": [
+            "경기 전 긴장",
+            "준비 루틴"
+          ],
+          "scores": {
+            "pressure": 4.1,
+            "support": 5.2,
+            "preparation": 4.8,
+            "recovery": 5.2,
+            "control": 4.4,
+            "stability": 4.1,
+            "emotion": 4.5,
+            "independence": 4.7,
+            "learning": 4.6,
+            "imagery": 4.9,
+            "adaptation": 5.0,
+            "resilience": 4.2,
+            "attitude": 5.3
+          }
         },
         "physical": {
-          "strengths": ["움직임 습득", "리듬 조절"],
-          "focus": ["한발 균형", "좌우 협응"],
-          "needs": ["한발 균형", "좌우 협응"],
-          "recommendations": ["한발 균형 후 짧은 패스", "낮은 속도에서 방향 전환 관찰"]
+          "strengths": [
+            "움직임 습득",
+            "리듬 조절"
+          ],
+          "focus": [
+            "한발 균형",
+            "좌우 협응"
+          ],
+          "needs": [
+            "한발 균형",
+            "좌우 협응"
+          ],
+          "recommendations": [
+            "한발 균형 후 짧은 패스",
+            "낮은 속도에서 방향 전환 관찰"
+          ],
+          "measurements": {
+            "bodyFat": 15.2,
+            "sdnn": 72.4,
+            "rmssd": 63.1,
+            "ecw": 0.381
+          }
         },
-        "metrics": { "멘탈 준비": "4.8 / 6", "멘탈 회복": "5.2 / 6" }
+        "metrics": {
+          "멘탈 준비": "4.8 / 6",
+          "멘탈 회복": "5.2 / 6"
+        }
       }
     }
   ]
